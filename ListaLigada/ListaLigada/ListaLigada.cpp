@@ -73,7 +73,7 @@ void menu()
 void inicializar()
 {
 
-	// se a lista j� possuir elementos
+	// se a lista já possuir elementos
 	// libera a memoria ocupada
 	NO* aux = primeiro;
 	while (aux != NULL) {
@@ -128,35 +128,93 @@ void inserirElemento()
 	cin >> novo->valor;
 	novo->prox = NULL;
 
-	if (primeiro == NULL)
-	{
-		primeiro = novo;
-	}
-	else
-	{
-		// procura o final da lista
-		NO* aux = primeiro;
-		while (aux->prox != NULL) {
-			aux = aux->prox;
+	int novoDup = novo->valor;
+	NO* valorDup = posicaoElemento(novoDup);
+
+	if (valorDup != NULL) {
+		cout << "Esse elemento ja esta na lista" << endl;
+		return;
+	} else {
+		if (primeiro == NULL)
+		{
+			primeiro = novo;
 		}
-		aux->prox = novo;
+		else
+		{
+			// procura o final da lista
+			NO* aux = primeiro;
+			while (aux->prox != NULL) {
+				aux = aux->prox;
+			}
+			aux->prox = novo;
+		}
 	}
 }
 
+/*Explicação da solução:
+Primeiro a função verifica se a ista está vazia (no primeiro if)
+Depois ele pede para o usuário digitar um elemento.
+Esse while vai comparando os valores da lista até achar o valor igual ao que o usuário digitou.
+Se o elemento não for encontrado, então a váriavel atual será igual a NULL, o que vai acionar o próximo if.
+O último if testa se o elemento a ser excluído será o primeiro da lista, caso positivo o nó primeiro será atualizado para o prox.
+Se o elemento estiver no meio da lista, o nó anterior desse elemento vai apontar para a variável que vem depois do elemento que será excluído.
+*/
+
 void excluirElemento()
 {
-	
+	if (primeiro == NULL) {
+		cout << "A lista esta vazia" << endl;
+		return;
+	}
+	 int busca;
+    cout << "Digite um elemento para excluí-lo: ";
+    cin >> busca;
+
+    NO* atual = primeiro;
+    NO* anterior = NULL;
+    while (atual != NULL && atual->valor != busca) {
+        anterior = atual;
+        atual = atual->prox;
+    }
+    if (atual == NULL) {
+        cout << "Elemento não encontrado na lista." << endl;
+        return;
+    }
+    if (atual == primeiro) {
+        primeiro = atual->prox;
+    }
+    else {
+        anterior->prox = atual->prox;
+    }
+    free(atual);
+    cout << "Elemento excluído com sucesso!" << endl;
 }
 
 void buscarElemento()
 {
+	if (primeiro == NULL) {
+		cout << "A lista esta vazia" << endl;
+} else{
+		int busca;
+		cout << "Digite um elemento para efetuar a busca" << endl;
+		cin >> busca;
+		NO* posicao = posicaoElemento(busca);
 	
+
+		if (posicaoElemento(busca) == NULL) {
+			cout << "Este elemento nao existe na lista." << endl;
+		}
+		else {
+			cout << "Este elemento se encontra na posicao " << posicao << endl;
+		}
+	}
+	
+
 }
 
 
-
 // retorna um ponteiro para o elemento buscado
-// ou NULL se o elemento n�o estiver na lista
+// ou NULL se o elemento não estiver na lista
 NO* posicaoElemento(int numero)
 {
 	NO* aux = primeiro;
